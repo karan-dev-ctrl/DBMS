@@ -1,0 +1,68 @@
+SELECT Country, COUNT(CustomerID) AS [Number of Customers]
+FROM Customers
+GROUP BY Country
+ORDER BY COUNT(CustomerID) DESC;
+
+SELECT lname, fname, residence, COUNT(*) 
+FROM Customer
+GROUP BY lname, fname, residence
+ORDER BY COUNT(*)
+
+SELECT lname, fname COUNT(*) 
+FROM Customer
+GROUP BY lname, fname
+ORDER BY COUNT(*)
+
+SELECT lname, fname COUNT(*) 
+FROM Customer
+GROUP BY lname, residance
+ORDER BY COUNT(*)
+
+
+
+--week 5
+
+
+SELECT lname, fname, residence, COUNT(*) 
+FROM Customer
+GROUP BY lname, fname, residence
+ORDER BY COUNT(*)
+
+--9 , 192
+
+SELECT lname, fname, COUNT(*) 
+FROM Customer
+GROUP BY lname, fname
+ORDER BY COUNT(*)
+
+--678, 2889
+
+
+SELECT lname, residence, COUNT(*) 
+FROM Customer
+GROUP BY lname, residence
+ORDER BY COUNT(*)
+
+--319, 1414
+
+
+explain plan for
+SELECT * FROM Customer
+WHERE lname='Müller' and fname='Alena' and  residence='Praha';
+
+select * from table(dbms_xplan.display);
+
+--Plan hash value: 2844954298
+
+set feedback on SQL_ID;
+SELECT * FROM Customer
+WHERE lname='Müller' and fname='Alena' and  residence='Praha';
+set feedback off SQL_ID;
+
+--SQL_ID: 2mmp45np5wjz9
+
+exec PrintQueryStat('2mmp45np5wjz9', 2844954298);
+
+
+
+
