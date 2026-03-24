@@ -23,6 +23,19 @@ create table Customer (
   birthday date not null
 );
 
+create table Customer_ct (
+  idc int primary key,
+  fname varchar(20) not null,
+  lname varchar(30) not null,
+  residence varchar(20) not null,
+  gender char(1) not null,
+  birthday date not null
+) organization index ;
+
+insert into Customer_ct select * from Customer;
+
+
+
 create table Product (
   idp int primary key,
   name varchar(30) not null,
