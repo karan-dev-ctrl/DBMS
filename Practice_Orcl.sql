@@ -62,4 +62,19 @@ from "Order" o
 join OrderItem oi on o.ido = oi.ido
 group by o.idc
 
+---
 
+select o.idc, sum(oi.unit_price  * oi.quantity) as total_Sales_cust
+from "Order" o
+join OrderItem oi on o.ido = oi.ido
+group by o.idc
+having sum(oi.unit_price  * oi.quantity) > 50000
+
+select *
+from Product
+where rownum <= 5;
+
+select *
+from Product
+order by unit_price desc
+fetch first 5 rows only;
