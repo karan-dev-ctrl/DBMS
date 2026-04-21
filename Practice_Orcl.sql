@@ -78,3 +78,10 @@ select *
 from Product
 order by unit_price desc
 fetch first 5 rows only;
+
+select o.idc, sum(oi.unit_price * oi.quantity) as total_sales
+from "Order" o
+join OrderItem oi on o.ido = oi.ido
+group by o.idc
+order by total_sales desc
+fetch first 3 rows only;
