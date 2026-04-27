@@ -124,6 +124,11 @@ CREATE INDEX IX_OrderItem_ido
 ON OrderItem(ido)
 INCLUDE (unit_price);
 
+or
+
+CREATE INDEX IX_OrderItem_ido
+ON OrderItem(ido, unit_price)
+
 ---logical read - 309
 --CPU Time - 0ms
 
