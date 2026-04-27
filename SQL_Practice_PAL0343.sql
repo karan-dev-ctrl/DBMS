@@ -136,6 +136,50 @@ INCLUDE (unit_price);
                  |    |--Index Seek(OBJECT:([PAL0343].[dbo].[Customer].[IX_Customer_residence_idc] AS [c]), SEEK:([c].[idc]=[PAL0343].[dbo].[Order].[idc] as [o].[idc] AND [c].[residence]='Berlin') ORDERED FORWARD)
                  |--Index Seek(OBJECT:([PAL0343].[dbo].[OrderItem].[IX_OrderItem_ido] AS [oi]), SEEK:([oi].[ido]=[PAL0343].[dbo].[Order].[ido] as [o].[ido]),  WHERE:([PAL0343].[dbo].[OrderItem].[unit_price] as [oi].[unit_price]>=(100000) AND [PAL0343].[dbo].[OrderItem].[unit_price] as [oi].[unit_price]<=(200000)) ORDERED FORWARD)
 
+
+
+--=======
+-- Comparison
+--=======
+-------------------
+-- Before
+-------------------
+-- table scan (Order) (datetime)
+-- RID look up (Customer) (Residence)
+-- RID lookup (OrderItem) (unit_price)
+
+-- CPU time: 63 ms
+-- IO Cost: ~2800
+
+----------------------
+-- After Optimization
+-------------------
+-- Index Seek (Order) (datetime)
+-- Index Seek (Customer) (Residence)
+-- Index Seek (OrderItem) (unit_price)
+
+-- CPU time: 5 ms
+-- IO Cost: ~70
+
+
+-- ============================================
+-- SUMMARY
+-- ============================================
+
+-- Iteration | Index Created                         | Reads | CPU  | Problem Fixed
+-- ----------|---------------------------------------|-------|------|----------------------
+-- Baseline  | None                                  | 4778  | 62ms | -
+-- 1         | IX_Order_composite(datetime, idc, ido)|  423  |  0ms | Table Scan removed
+-- 2         | IX_Customer_residence_idc(idc, res)   |  369  |  0ms | Customer RID Lookup removed
+-- 3         | IX_OrderItem_ido(ido, unit_price)      |  309  |  0ms | OrderItem RID Lookup removed
+
+-- WHY THE PHYSICAL DESIGN IS CORRECT AND OPTIMAL:
+--
+-- 1. No Table Scans    → every table is accessed via Index Seek
+-- 2. No RID Lookups    → all required columns are covered by indexes
+-- 3. All joins use Index Nested Loop Join
+
+    
 -- ============================================
 -- DROP indexes at END (make script rerunnable)
 -- ============================================
