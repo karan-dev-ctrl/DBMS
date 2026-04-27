@@ -142,3 +142,27 @@ INCLUDE (unit_price);
 DROP INDEX IF EXISTS IX_Order_composite ON "Order";
 DROP INDEX IF EXISTS IX_Customer_residence_idc ON Customer;
 DROP INDEX IF EXISTS IX_OrderItem_ido ON OrderItem;
+
+
+
+
+
+----Oracle 
+
+---baseline index
+
+---QEP :
+--|   0 | SELECT STATEMENT                |              |     1 |    42 |   748   (2)| 00:00:01 |
+--|   1 |  SORT AGGREGATE                 |              |     1 |    42 |            |          |
+--|   2 |   NESTED LOOPS                  |              |    18 |   756 |   748   (2)| 00:00:01 |
+--|   3 |    NESTED LOOPS                 |              |   180 |   756 |   748   (2)| 00:00:01 |
+--|   4 |     NESTED LOOPS                |              |    18 |   558 |   694   (2)| 00:00:01 |
+--|*  5 |      TABLE ACCESS FULL          | Order        |    18 |   324 |   658   (2)| 00:00:01 |
+--|*  6 |      TABLE ACCESS BY INDEX ROWID| CUSTOMER     |     1 |    13 |     2   (0)| 00:00:01 |
+--|*  7 |       INDEX UNIQUE SCAN         | SYS_C0091653 |     1 |       |     1   (0)| 00:00:01 |
+--|*  8 |     INDEX RANGE SCAN            | PK_ORDERITEM |    10 |       |     2   (0)| 00:00:01 |
+--|*  9 |    TABLE ACCESS BY INDEX ROWID  | ORDERITEM    |     1 |    11 |     3   (0)| 00:00:01 |
+
+
+----iteration 1
+
