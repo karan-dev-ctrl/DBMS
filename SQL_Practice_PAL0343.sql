@@ -161,8 +161,38 @@ DROP INDEX IF EXISTS IX_OrderItem_ido ON OrderItem;
 --|*  6 |      TABLE ACCESS BY INDEX ROWID| CUSTOMER     |     1 |    13 |     2   (0)| 00:00:01 |
 --|*  7 |       INDEX UNIQUE SCAN         | SYS_C0091653 |     1 |       |     1   (0)| 00:00:01 |
 --|*  8 |     INDEX RANGE SCAN            | PK_ORDERITEM |    10 |       |     2   (0)| 00:00:01 |
+
+
+
+----Iteration 1
+
+--CPU Time - 17
+---IO/cost - 283
+
+--QEP :
+
+--|   0 | SELECT STATEMENT                |                    |     1 |    42 |    76   (0)| 00:00:01 |
+--|   1 |  SORT AGGREGATE                 |                    |     1 |    42 |            |          |
+--|   2 |   NESTED LOOPS                  |                    |    18 |   756 |    76   (0)| 00:00:01 |
+--|   3 |    NESTED LOOPS                 |                    |   180 |   756 |    76   (0)| 00:00:01 |
+--|   4 |     NESTED LOOPS                |                    |    18 |   558 |    22   (0)| 00:00:01 |
+--|*  5 |      INDEX RANGE SCAN           | IX_ORDER_COMPOSITE |    18 |   324 |     3   (0)| 00:00:01 |
+--|*  6 |      TABLE ACCESS BY INDEX ROWID| CUSTOMER           |     1 |    13 |     2   (0)| 00:00:01 |
+--|*  7 |       INDEX UNIQUE SCAN         | SYS_C0091653       |     1 |       |     1   (0)| 00:00:01 |
+--|*  8 |     INDEX RANGE SCAN            | PK_ORDERITEM       |    10 |       |     2   (0)| 00:00:01 |
+--|*  9 |    TABLE ACCESS BY INDEX ROWID  | ORDERITEM          |     1 |    11 |     3   (0)| 00:00:01 |
 --|*  9 |    TABLE ACCESS BY INDEX ROWID  | ORDERITEM    |     1 |    11 |     3   (0)| 00:00:01 |
 
 
-----iteration 1
+----iteration 2
+---QEP : 
 
+--|   0 | SELECT STATEMENT              |                           |     1 |    42 |    76   (0)| 00:00:01 |
+--|   1 |  SORT AGGREGATE               |                           |     1 |    42 |            |          |
+--|   2 |   NESTED LOOPS                |                           |    18 |   756 |    76   (0)| 00:00:01 |
+--|   3 |    NESTED LOOPS               |                           |   180 |   756 |    76   (0)| 00:00:01 |
+--|   4 |     NESTED LOOPS              |                           |    18 |   558 |    22   (0)| 00:00:01 |
+--|*  5 |      INDEX RANGE SCAN         | IX_ORDER_COMPOSITE        |    18 |   324 |     3   (0)| 00:00:01 |
+--|*  6 |      INDEX RANGE SCAN         | IX_CUSTOMER_RESIDENCE_IDC |     1 |    13 |     2   (0)| 00:00:01 |
+--|*  7 |     INDEX RANGE SCAN          | PK_ORDERITEM              |    10 |       |     2   (0)| 00:00:01 |
+--|*  8 |    TABLE ACCESS BY INDEX ROWID| ORDERITEM                 |     1 |    11 |     3   (0)| 00:00:01 |
