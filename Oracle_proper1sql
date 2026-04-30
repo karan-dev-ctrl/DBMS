@@ -1,0 +1,93 @@
+---Q1
+
+select count(*) as cnt, sum(oi.quantity) as total
+from OrderItem oi 
+join "Order" o on o.ido = oi.ido
+join Store s on s.idso = o.idso
+where o.order_datetime = DATE '2025-01-15' and 
+oi.unit_price >=50000 and oi.unit_price <= 150000
+
+---Q2
+
+select count(*) as cnt, count(distinct c.idc) as cst
+from "Order" o
+join Customer c on c.idc = o.idc
+join Staff sa on sa.idsa = o.idsa
+where sa.residence = 'Berlin' and  o.order_status='completed'
+and order_datetime between 
+      to_date('2025-01-01','YYYY-MM-DD') 
+  and to_date('2025-03-31','YYYY-MM-DD');
+  
+--q3
+
+select count(*) as cnt, avg(oi.unit_price) as average
+from OrderItem oi
+join "Order" o on o.ido = oi.ido
+join Customer c on c.idc = o.idc
+where c.gender = 'f' and c.residence = 'Praha' 
+and o.order_datetime = DATE '2025-05-1' and
+oi.quantity >=3
+
+--q7 
+
+select count(*) as cnt, sum(oi.quantity) as quant
+from OrderItem oi 
+join "Order" o on o.ido = oi.ido
+join Customer c on c.idc = o.idc
+join Store s on s.idso = o.idso
+where c.lname Like 'N%' and s.residence = 'Vienna' and 
+oi.unit_price >=100000 and oi.unit_price  <=300000 and
+o.order_datetime = DATE '2025-01-01'
+
+
+--q8 
+
+select count(*) as cnt, avg(oi.quantity) as average
+from OrderItem oi 
+join "Order" o on o.ido = oi.ido
+join Staff sa on sa.idsa = o.idsa
+join Customer c on c.idc = o.idc 
+where sa.residence = 'London' 
+and c.birthday between 
+      to_date('1985-01-01','YYYY-MM-DD') 
+  and to_date('1995-12-31','YYYY-MM-DD')
+and o.order_datetime = DATE '2025-05-01' 
+
+
+
+--q6
+select p.name, count(*)as cnt,  max(oi.unit_price)
+from Product p 
+join OrderItem oi on oi.idp = p.idp
+join "Order" o on o.ido = oi.ido
+join Store s on s.idso = o.idso
+where s.residence = 'London' and
+o.order_datetime between 
+      to_date('2025-01-01','YYYY-MM-DD') 
+  and to_date('2025-12-31','YYYY-MM-DD')
+group by p.name
+order by sum(oi.qunatity * oi.unit_price)
+having p.name > 3;
+
+--q7
+select sa.fname, sa.lname, count(*) as cnt, avg(oi.unit_price) average
+from Staff sa
+join "Order" o on o.idsa = sa.idsa
+join OrderItem oi on oi.ido = o.ido
+join Customer c on c.idc = o.idc
+where c.residence = 'Berlin' and
+o.order_datetime between 
+      to_date('2025-01-01','YYYY-MM-DD') 
+  and to_date('2025-03-31','YYYY-MM-DD')
+group by sa.lname, sa.fname
+order by average desc
+
+
+
+
+select * from "Order"
+select * from OrderItem
+select * from Staff
+select * from Customer
+select * from Store
+select * from Product 
